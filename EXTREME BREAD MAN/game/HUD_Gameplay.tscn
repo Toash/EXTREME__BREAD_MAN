@@ -1,0 +1,236 @@
+[gd_scene load_steps=11 format=2]
+
+[ext_resource path="res://game/ui/HUD_Gameplay.gd" type="Script" id=1]
+[ext_resource path="res://textures/feather.png" type="Texture" id=2]
+[ext_resource path="res://textures/bread/bread.png" type="Texture" id=3]
+[ext_resource path="res://new_theme.tres" type="Theme" id=4]
+[ext_resource path="res://dogicapixel.ttf" type="DynamicFontData" id=5]
+
+[sub_resource type="Gradient" id=1]
+offsets = PoolRealArray( 0.988142 )
+colors = PoolColorArray( 1, 0, 0, 0 )
+
+[sub_resource type="GradientTexture2D" id=2]
+gradient = SubResource( 1 )
+fill_from = Vector2( 0.495833, 0.461172 )
+
+[sub_resource type="Gradient" id=3]
+offsets = PoolRealArray( 0.996047 )
+colors = PoolColorArray( 0, 0.999823, 1, 1 )
+
+[sub_resource type="GradientTexture2D" id=4]
+gradient = SubResource( 3 )
+fill_from = Vector2( 0.00416667, 0.0104167 )
+
+[sub_resource type="DynamicFont" id=5]
+size = 8
+font_data = ExtResource( 5 )
+
+[node name="HUD_Gameplay" type="CanvasLayer"]
+script = ExtResource( 1 )
+
+[node name="Control" type="Control" parent="."]
+anchor_right = 1.0
+anchor_bottom = 1.0
+theme = ExtResource( 4 )
+
+[node name="Feathers" type="HBoxContainer" parent="Control"]
+anchor_left = 1.0
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+margin_left = -62.0
+margin_top = -38.0
+size_flags_horizontal = 0
+size_flags_vertical = 0
+custom_constants/separation = 17
+
+[node name="Control" type="Control" parent="Control/Feathers"]
+margin_bottom = 38.0
+
+[node name="Sprite" type="Sprite" parent="Control/Feathers/Control"]
+position = Vector2( 8, 8 )
+texture = ExtResource( 2 )
+
+[node name="Label" type="Label" parent="Control/Feathers"]
+margin_left = 17.0
+margin_top = 13.0
+margin_right = 23.0
+margin_bottom = 25.0
+text = ":"
+
+[node name="Water" type="TextureProgress" parent="Control"]
+anchor_top = 0.5
+anchor_bottom = 0.5
+margin_left = 22.0
+margin_top = -32.0
+margin_right = 86.0
+margin_bottom = 32.0
+rect_scale = Vector2( 0.182, 1 )
+size_flags_horizontal = 0
+size_flags_vertical = 0
+texture_under = SubResource( 2 )
+texture_progress = SubResource( 4 )
+fill_mode = 3
+
+[node name="Breads" type="HBoxContainer" parent="Control"]
+anchor_top = 1.0
+anchor_bottom = 1.0
+margin_left = 18.0
+margin_top = -24.0
+margin_right = 62.0
+margin_bottom = 16.004
+custom_constants/separation = 22
+
+[node name="Control" type="Control" parent="Control/Breads"]
+margin_bottom = 40.0
+
+[node name="Sprite" type="Sprite" parent="Control/Breads/Control"]
+position = Vector2( 8, 8 )
+texture = ExtResource( 3 )
+
+[node name="Control2" type="Control" parent="Control/Breads"]
+margin_left = 22.0
+margin_right = 22.0
+margin_bottom = 40.0
+
+[node name="Sprite" type="Sprite" parent="Control/Breads/Control2"]
+position = Vector2( 8, 8 )
+texture = ExtResource( 3 )
+
+[node name="Control3" type="Control" parent="Control/Breads"]
+margin_left = 44.0
+margin_right = 44.0
+margin_bottom = 40.0
+
+[node name="Sprite" type="Sprite" parent="Control/Breads/Control3"]
+position = Vector2( 8, 8 )
+texture = ExtResource( 3 )
+
+[node name="UpgradeText" type="Label" parent="Control"]
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+margin_left = -10.0
+margin_top = -47.0
+margin_right = 10.0
+margin_bottom = -31.0
+size_flags_horizontal = 0
+size_flags_vertical = 0
+
+[node name="UpgradeChoices" type="HBoxContainer" parent="Control"]
+anchor_left = 0.5
+anchor_top = 1.0
+anchor_right = 0.5
+anchor_bottom = 1.0
+margin_left = -60.0
+margin_top = -40.0
+margin_right = 20.0
+size_flags_horizontal = 0
+size_flags_vertical = 0
+custom_constants/separation = 46
+
+[node name="Range" type="Control" parent="Control/UpgradeChoices"]
+margin_bottom = 40.0
+
+[node name="Panel" type="Panel" parent="Control/UpgradeChoices/Range"]
+margin_right = 40.0
+margin_bottom = 40.0
+
+[node name="Label" type="Label" parent="Control/UpgradeChoices/Range/Panel"]
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+margin_left = -17.0
+margin_top = -13.0
+margin_right = 48.0
+margin_bottom = 38.0
+rect_scale = Vector2( 0.5, 0.5 )
+custom_fonts/font = SubResource( 5 )
+text = "Numkey: 1
+
+Range
+
+5 Feathers
+"
+
+[node name="Range2" type="Control" parent="Control/UpgradeChoices"]
+margin_left = 46.0
+margin_right = 46.0
+margin_bottom = 40.0
+
+[node name="Panel" type="Panel" parent="Control/UpgradeChoices/Range2"]
+margin_right = 40.0
+margin_bottom = 40.0
+
+[node name="Label" type="Label" parent="Control/UpgradeChoices/Range2/Panel"]
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+margin_left = -17.0
+margin_top = -13.0
+margin_right = 48.0
+margin_bottom = 38.0
+rect_scale = Vector2( 0.5, 0.5 )
+custom_fonts/font = SubResource( 5 )
+text = "Numkey: 1
+
+Range
+
+5 Feathers
+"
+
+[node name="Range3" type="Control" parent="Control/UpgradeChoices"]
+margin_left = 92.0
+margin_right = 92.0
+margin_bottom = 40.0
+
+[node name="Panel" type="Panel" parent="Control/UpgradeChoices/Range3"]
+margin_right = 40.0
+margin_bottom = 40.0
+
+[node name="Label" type="Label" parent="Control/UpgradeChoices/Range3/Panel"]
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+margin_left = -17.0
+margin_top = -13.0
+margin_right = 48.0
+margin_bottom = 38.0
+rect_scale = Vector2( 0.5, 0.5 )
+custom_fonts/font = SubResource( 5 )
+text = "Numkey: 1
+
+Range
+
+5 Feathers
+"
+
+[node name="HungrySeagulls" type="Label" parent="Control"]
+visible = false
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+margin_left = -66.0
+margin_top = -51.0
+margin_right = 258.0
+margin_bottom = -39.0
+rect_scale = Vector2( 0.5, 0.5 )
+text = "THE SEAGULLS GET HUNGRIER"
+
+[node name="SoggyBread" type="Label" parent="Control"]
+anchor_left = 0.5
+anchor_top = 0.36
+anchor_right = 0.5
+anchor_bottom = 0.524
+margin_left = -20.0
+margin_top = -6.0
+margin_right = 20.0
+margin_bottom = 6.0
+rect_scale = Vector2( 0.5, 0.5 )
+text = "soggy bread!"

@@ -1,0 +1,46 @@
+[gd_scene load_steps=6 format=2]
+
+[ext_resource path="res://new_theme.tres" type="Theme" id=1]
+[ext_resource path="res://game/SCENES/levels/Story.gd" type="Script" id=2]
+[ext_resource path="res://textures/bread/bread.png" type="Texture" id=3]
+[ext_resource path="res://dogicapixel.ttf" type="DynamicFontData" id=4]
+
+[sub_resource type="DynamicFont" id=1]
+size = 8
+font_data = ExtResource( 4 )
+
+[node name="Story" type="Panel"]
+anchor_right = 1.0
+anchor_bottom = 1.0
+theme = ExtResource( 1 )
+script = ExtResource( 2 )
+
+[node name="Label" type="Label" parent="."]
+anchor_right = 1.0
+anchor_bottom = 1.0
+size_flags_horizontal = 0
+size_flags_vertical = 0
+custom_fonts/font = SubResource( 1 )
+text = "
+
+You are on the bread planet, bread-anus.
+
+The seagulls have invaded, 
+coming for you, a helpless piece of bread.
+
+-well, you would be helpless, 
+if it weren't for your trusty water turbo blaster 9000.
+
+You must defend yourself from being seagull dinner."
+align = 1
+autowrap = true
+
+[node name="Start" type="TextureButton" parent="."]
+margin_left = 135.0
+margin_top = 126.0
+margin_right = 175.0
+margin_bottom = 166.0
+texture_normal = ExtResource( 3 )
+expand = true
+
+[connection signal="pressed" from="Start" to="." method="_on_Start_pressed"]
