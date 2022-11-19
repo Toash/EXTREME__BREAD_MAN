@@ -1,9 +1,12 @@
-[gd_scene load_steps=7 format=2]
+[gd_scene load_steps=10 format=2]
 
 [ext_resource path="res://textures/cloud/angry_cloud2.png" type="Texture" id=1]
 [ext_resource path="res://textures/cloud/angry_cloud3.png" type="Texture" id=2]
 [ext_resource path="res://textures/cloud/angry_cloud1.png" type="Texture" id=3]
 [ext_resource path="res://textures/water.png" type="Texture" id=4]
+[ext_resource path="res://game/enemies/StormCloud.gd" type="Script" id=5]
+[ext_resource path="res://game/enemies/storm_rain.gd" type="Script" id=6]
+[ext_resource path="res://game/enemies/StormCloudCollider.gd" type="Script" id=7]
 
 [sub_resource type="RectangleShape2D" id=2]
 extents = Vector2( 29.5, 130 )
@@ -15,13 +18,14 @@ animations = [ {
 "name": "default",
 "speed": 5.0
 }, {
-"frames": [ ExtResource( 3 ), ExtResource( 1 ), ExtResource( 2 ) ],
+"frames": [ ExtResource( 3 ), ExtResource( 1 ), ExtResource( 2 ), ExtResource( 1 ) ],
 "loop": true,
 "name": "strike",
-"speed": 5.0
+"speed": 2.0
 } ]
 
 [node name="StormCloud" type="Node2D"]
+script = ExtResource( 5 )
 
 [node name="StormCloudArea" type="Area2D" parent="."]
 position = Vector2( -1, -66 )
@@ -31,8 +35,9 @@ collision_mask = 0
 [node name="CollisionShape2D" type="CollisionShape2D" parent="StormCloudArea"]
 position = Vector2( 1, 60 )
 shape = SubResource( 2 )
+script = ExtResource( 7 )
 
-[node name="CPUParticles2D" type="CPUParticles2D" parent="."]
+[node name="Rain" type="CPUParticles2D" parent="."]
 position = Vector2( 2, -128 )
 amount = 70
 lifetime = 2.0
@@ -42,9 +47,25 @@ emission_shape = 2
 emission_rect_extents = Vector2( 24.83, 1 )
 scale_amount = 0.1
 scale_amount_random = 0.05
+script = ExtResource( 6 )
 
 [node name="AnimatedSprite" type="AnimatedSprite" parent="."]
 position = Vector2( -2, -126 )
 scale = Vector2( 3, 3 )
 frames = SubResource( 1 )
 animation = "strike"
+
+[node name="StrikeTimer" type="Timer" parent="."]
+wait_time = 2.0
+one_shot = true
+autostart = true
+
+[node name="LifetimeTimer" type="Timer" parent="."]
+wait_time = 6.5
+one_shot = true
+autostart = true
+
+[connection signal="strike" from="." to="StormCloudArea/CollisionShape2D" method="_on_StormCloud_strike"]
+[connection signal="strike" from="." to="Rain" method="_on_StormCloud_strike"]
+[connection signal="timeout" from="StrikeTimer" to="." method="_on_StrikeTimer_timeout"]
+[connection signal="timeout" from="LifetimeTimer" to="." method="_on_LifetimeTimer_timeout"]

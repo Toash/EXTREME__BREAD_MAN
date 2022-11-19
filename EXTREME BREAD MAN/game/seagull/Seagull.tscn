@@ -1,10 +1,13 @@
-[gd_scene load_steps=11 format=2]
+[gd_scene load_steps=14 format=2]
 
 [ext_resource path="res://textures/bird/seagull_fly2.png" type="Texture" id=1]
 [ext_resource path="res://game/seagull/Seagull.gd" type="Script" id=2]
 [ext_resource path="res://textures/bird/seagull_fly1.png" type="Texture" id=3]
 [ext_resource path="res://textures/bird/seagull_flee1.png" type="Texture" id=4]
 [ext_resource path="res://textures/bird/seagull_flee2.png" type="Texture" id=5]
+[ext_resource path="res://audio/chirp.wav" type="AudioStream" id=6]
+[ext_resource path="res://game/seagull/chirpsfx.gd" type="Script" id=7]
+[ext_resource path="res://game/seagull/seagull_sprite.gd" type="Script" id=8]
 
 [sub_resource type="CircleShape2D" id=2]
 radius = 8.0
@@ -67,11 +70,20 @@ frames = SubResource( 1 )
 animation = "flee"
 frame = 1
 playing = true
+script = ExtResource( 8 )
 
 [node name="DespawnTimer" type="Timer" parent="."]
 wait_time = 3.0
 one_shot = true
 
+[node name="Chirp" type="AudioStreamPlayer2D" parent="."]
+stream = ExtResource( 6 )
+volume_db = 15.0
+bus = "SFX"
+script = ExtResource( 7 )
+
+[connection signal="hit_water" from="." to="AnimatedSprite" method="_on_Seagull_hit_water"]
+[connection signal="hit_water" from="." to="Chirp" method="_on_Seagull_hit_water"]
 [connection signal="body_entered" from="EnvironmentArea" to="." method="_on_environment_entered"]
 [connection signal="body_entered" from="PlayerArea" to="." method="_on_enter_player"]
 [connection signal="body_entered" from="WaterArea" to="." method="_on_water_entered"]

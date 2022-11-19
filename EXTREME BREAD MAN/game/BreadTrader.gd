@@ -17,7 +17,9 @@ func _process(delta):
 		sprite.flip_h = true
 
 func _on_Hitbox_area_entered(area):
+	emit_signal("entered_breadtrader")
 	dialogue.show()
 
 func _on_Hitbox_area_exited(area):
+	#emit_signal("exited_breadtrader")
 	dialogue.hide()

@@ -1,11 +1,21 @@
 extends Node
 
+signal upgrade_range
+signal upgrade_firerate
+signal upgrade_capacity
+signal upgrade_nozzle_count
+
 onready var player : Node2D = get_tree().get_nodes_in_group('player')[0]
 onready var water_gun = player.get_node("WaterGun")
+onready var level_root = get_tree().get_nodes_in_group("level_root")[0]
+
 onready var feather_display = $Control/Feathers/Label
 onready var water_level = $Control/Water
 onready var upgrade_text = $Control/UpgradeText
 onready var upgrade_choices = $Control/UpgradeChoices
+onready var soggy_bread = $Control/SoggyBread
+onready var hungry_seagulls = $Control/HungrySeagulls
+onready var score_display = $Control/Score
 
 onready var breads_display = $Control/Breads
 onready var breads = []
@@ -13,13 +23,38 @@ onready var breads = []
 func _ready():
 	player.connect("update_feather_count",self,"change_feather_text")
 	player.connect("update_health",self,"change_health")
+	player.connect("just_wet",self,"show_soggy_bread")
+	player.connect("just_dried",self,"hide_soggy_bread")
+	player.connect("entered_trader",self,"show_upgrade_choices")
+	player.connect("exited_trader",self,"hide_upgrade_choices")
+	player.connect("update_score",self,"change_score")
+	
+	level_root.connect("seagulls_stronger",self,"show_hungry_seagulls")
+	
 	water_gun.connect("update_water_count",self,"change_water_text")
 	
 	yield(get_tree(),"idle_frame") #Late ready
 	for child in breads_display.get_children():
 		breads.append(child)
 	hide_upgrade_choices()
+	hide_soggy_bread()
+	hide_hungry_seagulls()
 	
+func change_score(score):
+	score_display.text = "Score: " + str(int(score))
+	
+func hide_hungry_seagulls():
+	hungry_seagulls.hide()
+func show_hungry_seagulls():
+	hungry_seagulls.show()
+	$Control/HungrySeagulls/HungrySeagullsTimer.start()
+
+func show_soggy_bread():
+	soggy_bread.show()
+	
+func hide_soggy_bread():
+	soggy_bread.hide()
+
 func show_upgrade_choices():
 	upgrade_choices.show()
 	
@@ -50,3 +85,24 @@ func change_water_text(value,max_value):
 	water_level.value = percentage
 	
 	
+
+
+func _on_HungrySeagullsTimer_timeout():
+	hide_hungry_seagulls()
+
+
+
+func _on_upgrade_ranged():
+	emit_signal("upgrade_range")
+
+
+func _on_upgrade_firerate():
+	emit_signal("upgrade_firerate")
+
+
+func _on_upgrade_capacity():
+	emit_signal("upgrade_capacitys")
+
+
+func _on_upgrade_multiplier():
+	emit_signal("upgrade_nozzle_count")

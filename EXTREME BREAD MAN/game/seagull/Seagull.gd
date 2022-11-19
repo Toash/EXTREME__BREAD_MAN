@@ -5,9 +5,15 @@ extends KinematicBody2D
 signal hit_bread 
 signal hit_water
 
+var points_on_death = 100
+var max_health = 2 
+onready var cur_health = max_health
 var speed = 80
 var drift_speed = 80
 
+var is_homing
+
+var player 
 onready var target_node : Node2D
 var go_dir = Vector2.ZERO
 
@@ -23,19 +29,41 @@ onready var feather = preload("res://game/feather/Feather.tscn")
 
 func _ready():
 	sprite.animation = "flying"
+	yield(get_tree(),"idle_frame")
+	player = get_tree().get_nodes_in_group("player")[0]
 	
 func _process(delta):
 	animate()
 
 func _physics_process(delta):
-	
 	go_towards_go_dir(delta)
 	drift_towards_target(delta)
 
-func set_target(tar : Node2D):
-	target_node = tar
+func set_target(tar,homing:bool):
+	self.is_homing = homing
+	if tar is Node2D:
+		target_node = tar
+	elif tar is Vector2:
+		target_node = Node2D.new()
+		get_tree().root.add_child(target_node)
+		target_node.global_position = tar
+	else:
+		printerr("Invalid type")
+
 	go_dir = global_position.direction_to(target_node.global_position)
 
+func subtract_health(amount):
+	cur_health -= amount
+	if cur_health<=0:
+		die()
+
+func die():
+	player.add_to_score(points_on_death)
+	emit_signal("hit_water")
+	fly_away()
+	call_deferred("free_colliders")
+	call_deferred("drop_feather")
+	
 # Pick random point in a cone pointing up, go there.
 # Going to have to rewrite some code to implement this 
 # Make sure seagull cannot be hit again
@@ -44,7 +72,7 @@ func fly_away():
 	var narnia = Node2D.new()
 	get_tree().root.add_child(narnia)
 	narnia.global_position = position+(Vector2.UP * 100)
-	set_target(narnia)
+	set_target(narnia,false)
 	despawn_timer.start()
 	
 func drop_feather():
@@ -83,12 +111,10 @@ func _on_environment_entered(body):
 	fly_away()
 
 func _on_water_entered(body):
-	fly_away()
-	call_deferred("free_colliders")
-	call_deferred("drop_feather")
+	subtract_health(1)
 
 func _on_enter_player(body):
-	body.take_damage(1)
+	body.change_health(1)
 
 func _on_DespawnTimer_timeout():
 	queue_free()

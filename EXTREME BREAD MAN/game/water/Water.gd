@@ -19,6 +19,9 @@ func disable_collider():
 	collider.set_deferred("disabled",true)
 
 func splash():
+	"""
+	Deletes water
+	"""
 	disable_collider()
 	water_stream.emitting = false
 	splash.emitting = true
@@ -28,4 +31,3 @@ func _on_FreeTimer_timeout():
 
 func _on_SeagullArea_area_entered(area):
 	splash()
-	print("hit seagull!")

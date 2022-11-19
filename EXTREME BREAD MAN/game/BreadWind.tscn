@@ -1,0 +1,33 @@
+[gd_scene load_steps=3 format=2]
+
+[sub_resource type="Gradient" id=1]
+offsets = PoolRealArray( 1 )
+colors = PoolColorArray( 0.628516, 0.580865, 0.318909, 1 )
+
+[sub_resource type="GradientTexture2D" id=2]
+gradient = SubResource( 1 )
+
+[node name="BreadWind" type="Node2D"]
+
+[node name="Panel" type="Panel" parent="."]
+modulate = Color( 1, 0.878431, 0.313726, 0.247059 )
+anchor_right = 1.0
+anchor_bottom = 1.0
+margin_right = 1000.0
+margin_bottom = 1000.0
+
+[node name="CPUParticles2D" type="CPUParticles2D" parent="."]
+position = Vector2( -58, 89 )
+amount = 260
+lifetime = 2.0
+texture = SubResource( 2 )
+emission_shape = 2
+emission_rect_extents = Vector2( 1, 100 )
+spread = 0.0
+gravity = Vector2( 0, 0 )
+initial_velocity = 600.0
+initial_velocity_random = 0.1
+angular_velocity = 100.0
+angular_velocity_random = 1.0
+scale_amount = 0.02
+scale_amount_random = 0.01
