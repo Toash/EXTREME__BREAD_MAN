@@ -4,7 +4,7 @@
 
 [sub_resource type="RectangleShape2D" id=1]
 
-[node name="Feather" type="RigidBody2D"]
+[node name="Feather" type="RigidBody2D" groups=["feather"]]
 collision_layer = 16
 collision_mask = 0
 

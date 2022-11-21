@@ -1,17 +1,22 @@
 extends KinematicBody2D
 
 signal update_health(amount)
-signal update_score(amount)
+signal update_score(score)
 signal update_feather_count(count)
+
+signal jumping
 
 signal just_wet
 signal just_dried
 
+signal took_damage
 signal died
 signal got_bread
 
 signal entered_trader
 signal exited_trader
+
+var feather_count = 0
 
 var max_health = 3
 onready var cur_health = max_health
@@ -29,7 +34,7 @@ var inputVec = Vector2.ZERO
 
 onready var score = 0
 
-var feather_count = 0
+
 
 var canJump = false
 var in_trader = false
@@ -38,18 +43,25 @@ onready var water_gun = $WaterGun
 onready var refill_area = $RefillArea
 onready var soggy_timer = $SoggyTimer
 onready var sprite = $AnimatedSprite
+onready var bread_area = $BreadArea
+onready var bread_col = bread_area.get_node("CollisionShape2D")
 
 func _ready():
 	yield(get_tree(),"idle_frame") # Late ready
 	emit_signal("update_health",cur_health)
-	emit_signal("update_feather_count",feather_count)
+	update_feathercount()
 
 func _process(delta):
+	if cur_health == max_health:
+		bread_col.set_deferred("disabled",true)
+	else:
+		bread_col.set_deferred("disabled",false)
 	get_input()
-	add_to_score(delta)
+	add_to_score(delta*10)
 	moveVec.x = clamp(moveVec.x,-cur_max_speed,cur_max_speed)
 	horizontal_accelerate(delta)
 	if inputVec.y<0 and is_on_floor():
+		emit_signal("jumping")
 		moveVec.y = -cur_jump_power
 	# If going up
 	if moveVec.y < 0 and !Input.is_action_pressed("jump"):
@@ -117,16 +129,18 @@ func dry():
 	cur_jump_power = max_jump_power
 	emit_signal("just_dried")
 	
-func change_health(amount):
-	cur_health -= amount
+func increase_health(amount):
+	if amount < 0:
+		emit_signal("took_damage")
+	cur_health = clamp(cur_health + amount,0,max_health)
 	emit_signal("update_health",cur_health)
 	if cur_health <= 0:
 		die()
 		
 func die():
 	call_deferred("queue_free")
-	get_tree().call_deferred("reload_current_scene")
 	emit_signal("died")
+	emit_signal("update_score",score)
 
 func update_feathercount():
 	emit_signal("update_feather_count",feather_count)
@@ -149,3 +163,7 @@ func _on_TraderArea_area_entered(area):
 func _on_TraderArea_area_exited(area):
 	emit_signal("exited_trader")
 	in_trader = false 
+
+func _on_BreadArea_area_entered(area):
+	emit_signal("got_bread")
+	increase_health(1)

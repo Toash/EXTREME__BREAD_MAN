@@ -121,6 +121,7 @@ interact={
 2d_physics/layer_7="TRADER"
 2d_physics/layer_8="STORM_CLOUD"
 2d_physics/layer_9="BREAD"
+2d_physics/layer_10="PLAYER_BOUND"
 
 [physics]
 

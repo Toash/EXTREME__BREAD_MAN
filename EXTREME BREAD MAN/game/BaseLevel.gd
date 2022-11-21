@@ -7,31 +7,33 @@ extends Node
 
 signal seagulls_stronger
 
-onready var ground = $Ground
-
 export (Color) var background_color
 
-var difficulty_multiplier = 1.5
-var d_rate = .05
+# 1.1 and not 1 because  if one it says seagulls are stronger on game start
+var difficulty_multiplier = 1.1
+var d_increase_rate = .04
 
-var max_difficulty = 10
+var max_difficulty = 5
+
+var stronger_cooldown_up = true
 
 func _ready():
 	VisualServer.set_default_clear_color(background_color)
 	
 func _process(delta):
-	difficulty_multiplier = clamp(difficulty_multiplier + d_rate*delta,0,max_difficulty)
-	#print(difficulty_factor)
+	difficulty_multiplier = clamp(difficulty_multiplier + (d_increase_rate*delta),0,max_difficulty)
+	if difficulty_multiplier - int(difficulty_multiplier) <= 0.02:
+		if stronger_cooldown_up and difficulty_multiplier!=max_difficulty:
+			emit_signal("seagulls_stronger")
+			stronger_cooldown_up = false
 
-func get_difficulty() -> int:
+func get_difficulty_number() -> int:
 	"""
 	Returns whole numbers of difficulty multiplier (1,2,3,4..etc)
+	This multiplier affects things such as seagull attributes. To make game harder 
+	As time progresses. 
 	"""
-	if difficulty_multiplier - int(difficulty_multiplier) <= 0.02:
-		emit_signal("seagulls_stronger")
 	return int(difficulty_multiplier)
-	
-func get_ground() -> Vector2:
-	return ground.global_position
 
-	
+func _on_StrongerTimer_timeout():
+	stronger_cooldown_up = true

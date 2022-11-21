@@ -9,8 +9,9 @@ func _ready():
 	player = get_tree().get_nodes_in_group('player')[0]
 
 func _process(delta):
-	acquire_target_pos()
-	go_towards_target(delta)                                
+	if is_instance_valid(player):
+		acquire_target_pos()
+		go_towards_target(delta)                                
 	
 func acquire_target_pos():
 	target = player.global_position

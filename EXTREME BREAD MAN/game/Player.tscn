@@ -1,4 +1,4 @@
-[gd_scene load_steps=16 format=2]
+[gd_scene load_steps=22 format=2]
 
 [ext_resource path="res://game/WaterGun.tscn" type="PackedScene" id=1]
 [ext_resource path="res://game/BreadMan.gd" type="Script" id=2]
@@ -8,6 +8,12 @@
 [ext_resource path="res://textures/bread/breadman_scared/bread_man_scared1.png" type="Texture" id=6]
 [ext_resource path="res://textures/bread/breadman_scared/bread_man_scared2.png" type="Texture" id=7]
 [ext_resource path="res://game/breadman_sprite.gd" type="Script" id=8]
+[ext_resource path="res://game/PlayerJump.gd" type="Script" id=9]
+[ext_resource path="res://audio/jump.wav" type="AudioStream" id=10]
+[ext_resource path="res://game/BreadPickup.gd" type="Script" id=11]
+[ext_resource path="res://audio/heal.wav" type="AudioStream" id=12]
+[ext_resource path="res://game/Hurt.gd" type="Script" id=13]
+[ext_resource path="res://audio/hurt.wav" type="AudioStream" id=14]
 
 [sub_resource type="RectangleShape2D" id=3]
 
@@ -21,6 +27,7 @@ extents = Vector2( 68, 21 )
 extents = Vector2( 5, 5 )
 
 [sub_resource type="RectangleShape2D" id=7]
+extents = Vector2( 14, 10 )
 
 [sub_resource type="RectangleShape2D" id=1]
 extents = Vector2( 8, 8 )
@@ -46,6 +53,7 @@ animations = [ {
 [node name="BreadMan" type="KinematicBody2D" groups=["player"]]
 z_index = 1
 collision_layer = 2
+collision_mask = 513
 script = ExtResource( 2 )
 __meta__ = {
 "_edit_group_": true
@@ -81,6 +89,8 @@ position = Vector2( 0, -1 )
 shape = SubResource( 6 )
 
 [node name="BreadArea" type="Area2D" parent="."]
+collision_layer = 0
+collision_mask = 256
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="BreadArea"]
 shape = SubResource( 7 )
@@ -102,10 +112,30 @@ script = ExtResource( 8 )
 wait_time = 3.0
 one_shot = true
 
+[node name="Jump" type="AudioStreamPlayer2D" parent="."]
+stream = ExtResource( 10 )
+bus = "SFX"
+script = ExtResource( 9 )
+
+[node name="BreadPickup" type="AudioStreamPlayer" parent="."]
+stream = ExtResource( 12 )
+bus = "SFX"
+script = ExtResource( 11 )
+
+[node name="Hurt" type="AudioStreamPlayer" parent="."]
+stream = ExtResource( 14 )
+volume_db = 4.16
+bus = "SFX"
+script = ExtResource( 13 )
+
+[connection signal="got_bread" from="." to="BreadPickup" method="_on_BreadMan_got_bread"]
+[connection signal="jumping" from="." to="Jump" method="_on_BreadMan_jumping"]
 [connection signal="just_dried" from="." to="AnimatedSprite" method="_on_BreadMan_just_dried"]
 [connection signal="just_wet" from="." to="AnimatedSprite" method="_on_BreadMan_just_wet"]
+[connection signal="took_damage" from="." to="Hurt" method="_on_BreadMan_took_damage"]
 [connection signal="body_entered" from="FeatherArea" to="." method="_on_feather_entered"]
 [connection signal="area_entered" from="TraderArea" to="." method="_on_TraderArea_area_entered"]
 [connection signal="area_exited" from="TraderArea" to="." method="_on_TraderArea_area_exited"]
 [connection signal="area_entered" from="StormCloudArea" to="." method="_on_StormCloudArea_area_entered"]
+[connection signal="area_entered" from="BreadArea" to="." method="_on_BreadArea_area_entered"]
 [connection signal="timeout" from="SoggyTimer" to="." method="_on_SoggyTimer_timeout"]

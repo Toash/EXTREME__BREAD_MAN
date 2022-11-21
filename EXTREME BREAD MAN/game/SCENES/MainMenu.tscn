@@ -34,15 +34,18 @@ align = 1
 [node name="Start" type="TextureButton" parent="Control"]
 anchor_top = 1.0
 anchor_bottom = 1.0
-margin_left = 43.0
-margin_top = -92.0
-margin_right = 107.0
-margin_bottom = -28.0
+margin_left = 40.0
+margin_top = -133.0
+margin_right = 104.0
+margin_bottom = -69.0
 size_flags_horizontal = 0
 size_flags_vertical = 0
 texture_normal = ExtResource( 2 )
 expand = true
 stretch_mode = 4
+__meta__ = {
+"_edit_group_": true
+}
 
 [node name="Label" type="Label" parent="Control/Start"]
 margin_left = 7.0
@@ -52,18 +55,59 @@ margin_bottom = 29.0
 rect_scale = Vector2( 0.75, 0.75 )
 text = "start"
 
+[node name="Tutorial" type="TextureButton" parent="Control"]
+anchor_top = 1.0
+anchor_bottom = 1.0
+margin_left = 40.0
+margin_top = -70.0
+margin_right = 104.0
+margin_bottom = -6.0
+size_flags_horizontal = 0
+size_flags_vertical = 0
+texture_normal = ExtResource( 2 )
+expand = true
+stretch_mode = 4
+__meta__ = {
+"_edit_group_": true
+}
+
+[node name="Label" type="Label" parent="Control/Tutorial"]
+margin_left = 9.0
+margin_top = 10.0
+margin_right = 85.0
+margin_bottom = 67.0
+rect_scale = Vector2( 0.75, 0.75 )
+text = "How to play?"
+autowrap = true
+
 [node name="Control" type="Control" parent="Control"]
-margin_left = 192.0
-margin_top = 98.0
-margin_right = 232.0
-margin_bottom = 138.0
+margin_left = 191.0
+margin_top = 97.0
+margin_right = 231.0
+margin_bottom = 137.0
+__meta__ = {
+"_edit_group_": true
+}
 
 [node name="AnimatedSprite" type="AnimatedSprite" parent="Control/Control"]
-position = Vector2( 16, 20 )
+position = Vector2( 18, 6 )
 scale = Vector2( 5, 5 )
 frames = SubResource( 1 )
-frame = 1
 playing = true
 flip_h = true
 
+[node name="MadeBy" type="Label" parent="Control"]
+anchor_left = 1.0
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+margin_left = -194.0
+margin_top = -11.0
+margin_right = 278.0
+margin_bottom = 9.00002
+rect_scale = Vector2( 0.4, 0.4 )
+text = "Made by Toash for Godot Wild Jam #51"
+autowrap = true
+
 [connection signal="pressed" from="Control/Start" to="." method="_on_Start_pressed"]
+[connection signal="pressed" from="Control/Tutorial" to="." method="_on_Tutorial_pressed"]

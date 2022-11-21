@@ -43,10 +43,11 @@ anchor_left = 1.0
 anchor_top = 1.0
 anchor_right = 1.0
 anchor_bottom = 1.0
-margin_left = -305.0
-margin_top = -49.0
-margin_right = -243.0
-margin_bottom = -11.0
+margin_left = -303.0
+margin_top = -45.0
+margin_right = -241.0
+margin_bottom = -7.0
+rect_scale = Vector2( 0.9, 0.9 )
 size_flags_horizontal = 0
 size_flags_vertical = 0
 custom_constants/separation = 17
@@ -72,13 +73,14 @@ anchor_left = 1.0
 anchor_top = 1.0
 anchor_right = 1.0
 anchor_bottom = 1.0
-margin_left = -32.0
-margin_top = -83.0
-margin_right = 32.0
-margin_bottom = -19.0
+margin_left = -38.9999
+margin_top = -75.0
+margin_right = 69.0001
+margin_bottom = -11.0
 rect_scale = Vector2( 0.182, 1 )
 size_flags_horizontal = 0
 size_flags_vertical = 0
+rounded = true
 texture_under = SubResource( 2 )
 texture_progress = SubResource( 4 )
 fill_mode = 3
@@ -141,13 +143,13 @@ margin_bottom = -2.0
 mouse_filter = 0
 size_flags_horizontal = 0
 size_flags_vertical = 0
-custom_constants/separation = 46
+custom_constants/separation = 55
 
 [node name="Upgrade_range" type="Control" parent="Control/UpgradeChoices"]
 margin_bottom = 40.0
 
 [node name="Button" type="Button" parent="Control/UpgradeChoices/Upgrade_range"]
-margin_right = 32.0
+margin_right = 50.0
 margin_bottom = 32.0
 
 [node name="VBoxContainer" type="VBoxContainer" parent="Control/UpgradeChoices/Upgrade_range/Button"]
@@ -182,12 +184,12 @@ scale = Vector2( 0.75, 0.75 )
 texture = ExtResource( 2 )
 
 [node name="Upgrade_FireRate" type="Control" parent="Control/UpgradeChoices"]
-margin_left = 46.0
-margin_right = 46.0
+margin_left = 55.0
+margin_right = 55.0
 margin_bottom = 40.0
 
 [node name="Button" type="Button" parent="Control/UpgradeChoices/Upgrade_FireRate"]
-margin_right = 32.0
+margin_right = 50.0
 margin_bottom = 32.0
 
 [node name="VBoxContainer" type="VBoxContainer" parent="Control/UpgradeChoices/Upgrade_FireRate/Button"]
@@ -222,12 +224,12 @@ scale = Vector2( 0.75, 0.75 )
 texture = ExtResource( 2 )
 
 [node name="Upgrade_Capacity" type="Control" parent="Control/UpgradeChoices"]
-margin_left = 92.0
-margin_right = 92.0
+margin_left = 110.0
+margin_right = 110.0
 margin_bottom = 40.0
 
 [node name="Button" type="Button" parent="Control/UpgradeChoices/Upgrade_Capacity"]
-margin_right = 32.0
+margin_right = 50.0
 margin_bottom = 32.0
 
 [node name="VBoxContainer" type="VBoxContainer" parent="Control/UpgradeChoices/Upgrade_Capacity/Button"]
@@ -261,56 +263,16 @@ position = Vector2( 5.702, 6.126 )
 scale = Vector2( 0.75, 0.75 )
 texture = ExtResource( 2 )
 
-[node name="Upgrade_Multiplier" type="Control" parent="Control/UpgradeChoices"]
-margin_left = 138.0
-margin_right = 138.0
-margin_bottom = 40.0
-
-[node name="Button" type="Button" parent="Control/UpgradeChoices/Upgrade_Multiplier"]
-margin_right = 32.0
-margin_bottom = 32.0
-
-[node name="VBoxContainer" type="VBoxContainer" parent="Control/UpgradeChoices/Upgrade_Multiplier/Button"]
-margin_right = 40.0
-margin_bottom = 40.0
-
-[node name="Label" type="Label" parent="Control/UpgradeChoices/Upgrade_Multiplier/Button/VBoxContainer"]
-margin_right = 41.0
-margin_bottom = 6.0
-custom_fonts/font = SubResource( 5 )
-text = "Spread"
-
-[node name="HBoxContainer" type="HBoxContainer" parent="Control/UpgradeChoices/Upgrade_Multiplier/Button/VBoxContainer"]
-margin_top = 10.0
-margin_right = 41.0
-margin_bottom = 16.0
-
-[node name="Cost" type="Label" parent="Control/UpgradeChoices/Upgrade_Multiplier/Button/VBoxContainer/HBoxContainer"]
-margin_right = 7.0
-margin_bottom = 6.0
-custom_fonts/font = SubResource( 6 )
-text = "5"
-
-[node name="Control" type="Control" parent="Control/UpgradeChoices/Upgrade_Multiplier/Button/VBoxContainer/HBoxContainer"]
-margin_left = 11.0
-margin_right = 11.0
-margin_bottom = 6.0
-
-[node name="Sprite" type="Sprite" parent="Control/UpgradeChoices/Upgrade_Multiplier/Button/VBoxContainer/HBoxContainer/Control"]
-position = Vector2( 5.702, 6.126 )
-scale = Vector2( 0.75, 0.75 )
-texture = ExtResource( 2 )
-
 [node name="HungrySeagulls" type="Label" parent="Control"]
 anchor_left = 0.5
 anchor_top = 0.5
 anchor_right = 0.5
 anchor_bottom = 0.5
-margin_left = -79.0
-margin_top = -63.0
-margin_right = 245.0
-margin_bottom = -36.0
-rect_scale = Vector2( 0.5, 0.5 )
+margin_left = -63.0
+margin_top = -38.0
+margin_right = 261.0
+margin_bottom = -11.0
+rect_scale = Vector2( 0.4, 0.4 )
 size_flags_horizontal = 0
 size_flags_vertical = 0
 text = "THE SEAGULLS GET HUNGRIER"
@@ -326,23 +288,37 @@ anchor_left = 0.5
 anchor_top = 0.36
 anchor_right = 0.5
 anchor_bottom = 0.524
-margin_left = -36.0
-margin_top = -0.800003
-margin_right = 114.0
-margin_bottom = 11.2
-rect_scale = Vector2( 0.5, 0.5 )
+margin_left = 17.0
+margin_top = 22.2
+margin_right = 167.0
+margin_bottom = 34.2
+rect_scale = Vector2( 0.3, 0.3 )
 text = "soggy bread!"
 
 [node name="Score" type="Label" parent="Control"]
 anchor_left = 0.5
 anchor_right = 0.5
-margin_left = -37.0
-margin_right = 37.0
-margin_bottom = 12.0
+margin_left = -143.0
+margin_top = 120.0
+margin_right = -69.0
+margin_bottom = 132.0
+rect_scale = Vector2( 0.5, 0.5 )
 text = "Score:"
+
+[node name="Maxed" type="Label" parent="Control"]
+margin_left = 155.0
+margin_top = 121.0
+margin_right = 235.0
+margin_bottom = 133.0
+rect_scale = Vector2( 0.4, 0.4 )
+text = "maxed!"
+
+[node name="MaxedTimer" type="Timer" parent="Control/Maxed"]
+wait_time = 0.4
+one_shot = true
 
 [connection signal="pressed" from="Control/UpgradeChoices/Upgrade_range/Button" to="." method="_on_upgrade_ranged"]
 [connection signal="pressed" from="Control/UpgradeChoices/Upgrade_FireRate/Button" to="." method="_on_upgrade_firerate"]
 [connection signal="pressed" from="Control/UpgradeChoices/Upgrade_Capacity/Button" to="." method="_on_upgrade_capacity"]
-[connection signal="pressed" from="Control/UpgradeChoices/Upgrade_Multiplier/Button" to="." method="_on_upgrade_multiplier"]
 [connection signal="timeout" from="Control/HungrySeagulls/HungrySeagullsTimer" to="." method="_on_HungrySeagullsTimer_timeout"]
+[connection signal="timeout" from="Control/Maxed/MaxedTimer" to="." method="_on_MaxedTimer_timeout"]

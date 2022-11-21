@@ -2,9 +2,9 @@ extends CPUParticles2D
 
 
 func _ready():
-	emitting = true
-	hide()
+	emitting = false
+
 	
 
 func _on_StormCloud_strike():
-	show()
+	emitting = true

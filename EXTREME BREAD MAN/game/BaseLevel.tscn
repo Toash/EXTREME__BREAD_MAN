@@ -1,10 +1,11 @@
-[gd_scene load_steps=6 format=2]
+[gd_scene load_steps=7 format=2]
 
 [ext_resource path="res://game/Player.tscn" type="PackedScene" id=1]
 [ext_resource path="res://game/CameraController.tscn" type="PackedScene" id=2]
 [ext_resource path="res://new_tileset.tres" type="TileSet" id=3]
 [ext_resource path="res://game/HUD_Gameplay.tscn" type="PackedScene" id=4]
 [ext_resource path="res://game/BaseLevel.gd" type="Script" id=5]
+[ext_resource path="res://game/StrongerTimer.gd" type="Script" id=6]
 
 [node name="BaseLevel" type="Node" groups=["level_root"]]
 script = ExtResource( 5 )
@@ -21,3 +22,9 @@ format = 1
 [node name="BreadMan" parent="." instance=ExtResource( 1 )]
 
 [node name="HUD" parent="." instance=ExtResource( 4 )]
+
+[node name="StrongerTimer" type="Timer" parent="."]
+script = ExtResource( 6 )
+
+[connection signal="seagulls_stronger" from="." to="StrongerTimer" method="_on_BaseLevel_seagulls_stronger"]
+[connection signal="timeout" from="StrongerTimer" to="." method="_on_StrongerTimer_timeout"]

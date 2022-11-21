@@ -1,16 +1,18 @@
-[gd_scene load_steps=10 format=2]
+[gd_scene load_steps=12 format=2]
 
-[ext_resource path="res://textures/weapon/watergun.png" type="Texture" id=1]
-[ext_resource path="res://textures/bird/seagull_fly2.png" type="Texture" id=2]
-[ext_resource path="res://textures/bird/seagull_fly1.png" type="Texture" id=3]
-[ext_resource path="res://textures/bird/seagull_flee1.png" type="Texture" id=4]
-[ext_resource path="res://textures/bird/seagull_flee2.png" type="Texture" id=5]
-[ext_resource path="res://textures/water.png" type="Texture" id=6]
-[ext_resource path="res://new_theme.tres" type="Theme" id=7]
+[ext_resource path="res://textures/bird/seagull_fly2.png" type="Texture" id=1]
+[ext_resource path="res://textures/bird/seagull_fly1.png" type="Texture" id=2]
+[ext_resource path="res://textures/bird/seagull_flee1.png" type="Texture" id=3]
+[ext_resource path="res://textures/bird/seagull_flee2.png" type="Texture" id=4]
+[ext_resource path="res://textures/water.png" type="Texture" id=5]
+[ext_resource path="res://textures/weapon/watergun.png" type="Texture" id=6]
+[ext_resource path="res://textures/bread/bread.png" type="Texture" id=7]
+[ext_resource path="res://new_theme.tres" type="Theme" id=8]
+[ext_resource path="res://game/SCENES/Tutorial.gd" type="Script" id=9]
 
 [sub_resource type="SpriteFrames" id=1]
 animations = [ {
-"frames": [ ExtResource( 3 ), ExtResource( 2 ) ],
+"frames": [ ExtResource( 2 ), ExtResource( 1 ) ],
 "loop": true,
 "name": "default",
 "speed": 5.0
@@ -18,7 +20,7 @@ animations = [ {
 
 [sub_resource type="SpriteFrames" id=2]
 animations = [ {
-"frames": [ ExtResource( 4 ), ExtResource( 5 ) ],
+"frames": [ ExtResource( 3 ), ExtResource( 4 ) ],
 "loop": true,
 "name": "default",
 "speed": 5.0
@@ -29,7 +31,8 @@ anchor_right = 1.0
 anchor_bottom = 1.0
 margin_left = 1.0
 margin_right = 1.0
-theme = ExtResource( 7 )
+theme = ExtResource( 8 )
+script = ExtResource( 9 )
 
 [node name="Seagull" type="Control" parent="."]
 anchor_left = 1.0
@@ -48,7 +51,6 @@ __meta__ = {
 position = Vector2( 27, 20 )
 scale = Vector2( 3, 3 )
 frames = SubResource( 1 )
-frame = 1
 playing = true
 
 [node name="SeagullCrying" type="Control" parent="."]
@@ -64,7 +66,6 @@ __meta__ = {
 position = Vector2( 24, 22 )
 scale = Vector2( 3, 3 )
 frames = SubResource( 2 )
-frame = 1
 playing = true
 
 [node name="WaterGun" type="Control" parent="."]
@@ -79,7 +80,7 @@ __meta__ = {
 [node name="Sprite" type="Sprite" parent="WaterGun"]
 position = Vector2( 21, 18 )
 scale = Vector2( 2, 2 )
-texture = ExtResource( 1 )
+texture = ExtResource( 6 )
 
 [node name="Label" type="Label" parent="."]
 margin_left = 96.0
@@ -131,7 +132,7 @@ margin_bottom = 97.0
 position = Vector2( 1, 0 )
 amount = 20
 lifetime = 0.8
-texture = ExtResource( 6 )
+texture = ExtResource( 5 )
 spread = 10.0
 initial_velocity = 50.0
 scale_amount = 0.2
@@ -144,13 +145,31 @@ margin_right = 288.0
 margin_bottom = 174.0
 
 [node name="Label" type="Label" parent="Controls"]
-margin_left = -18.0
-margin_top = -8.0
-margin_right = 136.0
-margin_bottom = 64.0
-rect_scale = Vector2( 0.55, 0.55 )
+margin_left = -37.0
+margin_top = 4.0
+margin_right = 177.0
+margin_bottom = 76.0
+rect_scale = Vector2( 0.5, 0.5 )
 text = "CONTROLS:
 
-WASD- MOVE
-SPACE - JUMP
+AD- MOVE
+W / SPACE - JUMP
 LMB- SHOOT"
+
+[node name="Back" type="TextureButton" parent="."]
+margin_left = 250.0
+margin_top = 14.0
+margin_right = 300.0
+margin_bottom = 64.0
+texture_normal = ExtResource( 7 )
+expand = true
+
+[node name="Label" type="Label" parent="Back"]
+margin_left = 7.0
+margin_top = 18.0
+margin_right = 63.0
+margin_bottom = 30.0
+rect_scale = Vector2( 0.6, 0.6 )
+text = "Back"
+
+[connection signal="pressed" from="Back" to="." method="_on_Back_pressed"]

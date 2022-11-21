@@ -1,6 +1,15 @@
-[gd_scene load_steps=2 format=2]
+[gd_scene load_steps=4 format=2]
 
 [ext_resource path="res://game/WaterGunUpgrader.gd" type="Script" id=1]
+[ext_resource path="res://game/UpgradeSound.gd" type="Script" id=2]
+[ext_resource path="res://audio/upgrade.wav" type="AudioStream" id=3]
 
 [node name="WaterGunUpgrader" type="Node2D"]
 script = ExtResource( 1 )
+
+[node name="UpgradeSound" type="AudioStreamPlayer" parent="."]
+stream = ExtResource( 3 )
+bus = "SFX"
+script = ExtResource( 2 )
+
+[connection signal="upgraded" from="." to="UpgradeSound" method="_on_WaterGunUpgrader_upgraded"]

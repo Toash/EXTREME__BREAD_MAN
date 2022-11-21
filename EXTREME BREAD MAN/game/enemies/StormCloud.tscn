@@ -1,4 +1,4 @@
-[gd_scene load_steps=10 format=2]
+[gd_scene load_steps=12 format=2]
 
 [ext_resource path="res://textures/cloud/angry_cloud2.png" type="Texture" id=1]
 [ext_resource path="res://textures/cloud/angry_cloud3.png" type="Texture" id=2]
@@ -7,6 +7,8 @@
 [ext_resource path="res://game/enemies/StormCloud.gd" type="Script" id=5]
 [ext_resource path="res://game/enemies/storm_rain.gd" type="Script" id=6]
 [ext_resource path="res://game/enemies/StormCloudCollider.gd" type="Script" id=7]
+[ext_resource path="res://game/enemies/StrikeAudio.gd" type="Script" id=8]
+[ext_resource path="res://audio/strike.wav" type="AudioStream" id=9]
 
 [sub_resource type="RectangleShape2D" id=2]
 extents = Vector2( 29.5, 130 )
@@ -41,6 +43,7 @@ script = ExtResource( 7 )
 position = Vector2( 2, -128 )
 amount = 70
 lifetime = 2.0
+preprocess = 243.12
 speed_scale = 2.0
 texture = ExtResource( 4 )
 emission_shape = 2
@@ -65,7 +68,14 @@ wait_time = 6.5
 one_shot = true
 autostart = true
 
+[node name="Strike" type="AudioStreamPlayer2D" parent="."]
+stream = ExtResource( 9 )
+volume_db = 5.628
+bus = "SFX"
+script = ExtResource( 8 )
+
 [connection signal="strike" from="." to="StormCloudArea/CollisionShape2D" method="_on_StormCloud_strike"]
 [connection signal="strike" from="." to="Rain" method="_on_StormCloud_strike"]
+[connection signal="strike" from="." to="Strike" method="_on_StormCloud_strike"]
 [connection signal="timeout" from="StrikeTimer" to="." method="_on_StrikeTimer_timeout"]
 [connection signal="timeout" from="LifetimeTimer" to="." method="_on_LifetimeTimer_timeout"]

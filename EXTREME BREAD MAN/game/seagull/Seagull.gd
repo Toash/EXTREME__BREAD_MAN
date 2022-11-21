@@ -1,13 +1,15 @@
 extends KinematicBody2D
 
-# Seagull goes to target, thats it
+signal attack
+signal flying_away
+signal evading
 
 signal hit_bread 
 signal hit_water
 
-var points_on_death = 100
-var max_health = 2 
-onready var cur_health = max_health
+var points_on_death = 10
+var max_health = 0
+var cur_health = 0
 var speed = 80
 var drift_speed = 80
 
@@ -17,20 +19,30 @@ var player
 onready var target_node : Node2D
 var go_dir = Vector2.ZERO
 
+#Root always going to be parent
+var level_root
+
 onready var sprite = $AnimatedSprite
 
 onready var envir_area = $EnvironmentArea
 onready var player_area = $PlayerArea
 onready var water_area = $WaterArea
 
-onready var despawn_timer = $DespawnTimer
-
 onready var feather = preload("res://game/feather/Feather.tscn")
 
+var rng = RandomNumberGenerator.new()
+
 func _ready():
+	if get_tree().get_nodes_in_group("level_root").size()>0:
+		level_root = get_tree().get_nodes_in_group("level_root")[0]
 	sprite.animation = "flying"
 	yield(get_tree(),"idle_frame")
-	player = get_tree().get_nodes_in_group("player")[0]
+	
+	var players = get_tree().get_nodes_in_group("player")
+	if players.size()>0:
+		player = get_tree().get_nodes_in_group("player")[0]
+	strongify()
+
 	
 func _process(delta):
 	animate()
@@ -38,19 +50,45 @@ func _process(delta):
 func _physics_process(delta):
 	go_towards_go_dir(delta)
 	drift_towards_target(delta)
+	
+func strongify():
+	match (level_root.get_difficulty_number()):
+		1:
+			speed = 80
+			drift_speed = 60
+			max_health = 2
+		2:
+			speed = 120
+			drift_speed = 80
+			max_health = 3
+		3:
+			speed = 140
+			drift_speed = 90 
+			max_health = 4
+		4:
+			speed = 160
+			drift_speed = 100
+			max_health = 6
+		5:
+			speed = 180
+			drift_speed = 115
+			max_health = 8
+		_:
+			printerr("Invalid difficulty!")
+	cur_health = max_health # Update cur health to new max health
 
-func set_target(tar,homing:bool):
-	self.is_homing = homing
-	if tar is Node2D:
-		target_node = tar
-	elif tar is Vector2:
-		target_node = Node2D.new()
-		get_tree().root.add_child(target_node)
-		target_node.global_position = tar
-	else:
-		printerr("Invalid type")
-
-	go_dir = global_position.direction_to(target_node.global_position)
+func set_target(tar,drifing:bool):
+	self.is_homing = drifing
+	if is_instance_valid(tar) or tar is Vector2:
+		if tar is Node2D:
+			target_node = tar
+		elif tar is Vector2:
+			target_node = Node2D.new()
+			get_tree().root.add_child(target_node)
+			target_node.global_position = tar
+		else:
+			printerr("Invalid type")
+		go_dir = global_position.direction_to(target_node.global_position)
 
 func subtract_health(amount):
 	cur_health -= amount
@@ -58,8 +96,8 @@ func subtract_health(amount):
 		die()
 
 func die():
-	player.add_to_score(points_on_death)
-	emit_signal("hit_water")
+	if is_instance_valid(player):
+		player.add_to_score(points_on_death)
 	fly_away()
 	call_deferred("free_colliders")
 	call_deferred("drop_feather")
@@ -68,12 +106,28 @@ func die():
 # Going to have to rewrite some code to implement this 
 # Make sure seagull cannot be hit again
 func fly_away():
-	sprite.animation = "flee"
+	"""
+	Flys away to narnia
+	"""
+	emit_signal("flying_away")
 	var narnia = Node2D.new()
 	get_tree().root.add_child(narnia)
-	narnia.global_position = position+(Vector2.UP * 100)
+	var random_angle = rng.randf_range(-PI/6,PI/6)
+	var random_dir = Vector2.UP.rotated(random_angle)
+	narnia.global_position = position+(random_dir.normalized()*300)
 	set_target(narnia,false)
-	despawn_timer.start()
+	
+func evade():
+	"""
+	Goes away, eventually tries to attack the player again	
+	"""
+	emit_signal("evading")
+	var tar = Node2D.new()
+	get_tree().root.add_child(tar)
+	var random_angle = rng.randf_range(-PI/6,PI/6)
+	var random_dir = Vector2.UP.rotated(random_angle)
+	tar.global_position = position+(random_dir.normalized()*300)
+	set_target(tar,false)
 	
 func drop_feather():
 	var feather_instance = feather.instance()
@@ -107,14 +161,28 @@ func free_colliders():
 	player_area.queue_free()
 	water_area.queue_free()
 	
+func attack(body):
+	emit_signal("attack")
+	body.increase_health(-1)	
+	
 func _on_environment_entered(body):
-	fly_away()
-
-func _on_water_entered(body):
-	subtract_health(1)
+	evade()
 
 func _on_enter_player(body):
-	body.change_health(1)
+	attack(body)
+	evade()
 
 func _on_DespawnTimer_timeout():
 	queue_free()
+
+func _on_WaterArea_area_entered(area):
+	emit_signal("hit_water")
+	subtract_health(1)
+
+func _on_ComebackTimer_timeout():
+	set_target(player,true)
+
+func _on_AttackTimer_timeout():
+	if is_instance_valid(self):	
+		if is_instance_valid(player_area):
+			player_area.call_deferred("collider_enabled",true)

@@ -34,9 +34,11 @@ __meta__ = {
 position = Vector2( 0, -10 )
 scale = Vector2( 1.2, 1.2 )
 frames = SubResource( 1 )
+frame = 1
 playing = true
 
 [node name="Dialogue" type="Label" parent="."]
+modulate = Color( 1, 1, 1, 0.517647 )
 margin_left = -42.0
 margin_top = -77.0
 margin_right = 58.0
